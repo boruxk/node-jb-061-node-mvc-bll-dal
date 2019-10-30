@@ -1,0 +1,36 @@
+extends layout
+
+block content
+    h1 All runners
+    form(name="search", method="post", action="/runner/list")
+        input(type="text", name="id")
+        input(type="text", name="name")
+        select(type="select" name="km" style='width:140px')
+            option(value="") #{""}
+            each i in dataSelect
+                option(value=i.km) #{i.km + "km"}
+        span.actions
+            input(type="submit", value="search", name="submit")
+    table(border='1')
+        thead
+            tr
+                th id
+                th name
+                th km
+                th created
+                th updated
+                th delete
+        tbody
+            each task in data
+                tr
+                    td(style='width:140px')=task.id
+                    td(style='width:140px')
+                        a(href="/runner/"+task.id)=task.name
+                    td(style='width:140px')=task.km
+                    td(style='width:140px')=task.createdDate
+                    td(style='width:140px')=task.updatedDate
+                    td(style='width:140px')
+                        a(href="/runner/edit/"+task.id) edit
+                        form(name="delete", method="post", action="/runner/list") 
+                            span.actions
+                                input(type="submit", value="delete", name="submit")

@@ -1,0 +1,13 @@
+extends layout
+
+block content
+    h1 Edit runner
+    form(name="search", method="post", action="/runner/edit/"+data.id)
+        p name
+        input(type="text", name="name" value=data.name)
+        p km
+        input(type="text", name="km" value=data.km)
+        p
+        span.actions
+            input(type="submit", value="edit", name="submit")
+    

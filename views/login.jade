@@ -1,0 +1,12 @@
+extends layout
+
+block content
+    h1 Login
+    form(name="search", method="post", action="/runner/login")
+        p name
+        input(type="text", name="name")
+        p pass
+        input(type="text", name="pass")
+        p
+        span.actions
+            input(type="submit", value="login", name="submit")
