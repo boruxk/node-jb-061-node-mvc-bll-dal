@@ -3,23 +3,27 @@ var router = express.Router();
 const runnerbl = require('./runner-bl');
 
 function getCtrl2(req, res, next) {
-    runnerbl.getRunners(function (err, runnersData) {
-        if (err) {
-            res.render(`error: ${err}`);
-        } else {
-            if (res.locals.filtered && res.locals.filtered.length > 0) {
-                res.render('runners', {
-                    data: res.locals.filtered,
-                    dataSelect: runnersData
-                });
+    if (req.session.xyz !== true) {
+        res.redirect('/login');
+    } else {
+        runnerbl.getRunners(function (err, runnersData) {
+            if (err) {
+                res.render(`error: ${err}`);
             } else {
-                res.render('runners', {
-                    data: runnersData,
-                    dataSelect: runnersData
-                });
+                if (res.locals.filtered && res.locals.filtered.length > 0) {
+                    res.render('runners', {
+                        data: res.locals.filtered,
+                        dataSelect: runnersData
+                    });
+                } else {
+                    res.render('runners', {
+                        data: runnersData,
+                        dataSelect: runnersData
+                    });
+                }
             }
-        }
-    })
+        })
+    }
 }
 
 function postCtrl2(req, res, next) {
@@ -98,14 +102,10 @@ function getCtrl3(req, res, next) {
     })
 }
 
-function getCtrl4(req, res, next) {
-    res.render('login');
-}
-
 router.get('/list', getCtrl2);
 router.post('/list', postCtrl2, getCtrl2);
 router.get('/add', getCtrl);
 router.post('/add', postCtrl, getCtrl2);
 router.get('/:id', getCtrl3);
-router.get('/login', getCtrl4);
+
 module.exports = router;
