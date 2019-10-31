@@ -5,6 +5,11 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
     nav
-        a(href='/') Home |  
-        a(href='/login') Login
+        a(href='/') Home |
+        if username !== undefined
+          a(href='/runner/list') Runners List |  
+          a(href='/runner/add') Sign Up for the Marathon | 
+          a(href='/login/end') Logout (#{username})
+        else
+          a(href='/login') Login
     block content

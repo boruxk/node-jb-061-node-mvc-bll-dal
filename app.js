@@ -20,6 +20,10 @@ app.use(cookieSession({
   maxAge: 3 * 24 * 60 * 60 * 1000,
   keys: ["ssshhhhh"]
 }));
+app.use(function (req, res, next) {
+  res.locals.username = req.session.username;
+  next();
+});
 
 app.use(logger('dev'));
 app.use(express.json());

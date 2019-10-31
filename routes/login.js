@@ -13,7 +13,7 @@ function postCtrl4(req, res, next) {
     if (loginData.name === "abc" && loginData.pass === "123") {
         req.session.xyz = true;
         req.session.rand = Math.random();
-        req.session.username = req.body.username;
+        req.session.username = loginData.name;
     } else {
         isOk = false;
     }
@@ -27,7 +27,7 @@ function postCtrl4(req, res, next) {
 
 function getCtrlEnd(req, res, next) {
     req.session = null;
-    res.render('login');
+    res.render('login', { username: undefined });
 };
 
 router.get('/', getCtrl4);
