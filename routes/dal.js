@@ -37,10 +37,35 @@ function saveOne(runner, callback) {
     });
 }
 
-function updateOne(runner, id, callback) {
-
+function updateOne(id, callback) {
+    const fileName = 'runner.txt';
+    fs.readFile(fileName, (e, d) => {
+        let data = d && d.length > 0 ? JSON.parse(d.toString()) : [];
+        data = data.filter(runner => runner.id.toString() === id);
+        let [dataOne] = data;
+        callback(null, dataOne);
+    });
 }
 
+function editOne(runner, callback) {
+    const fileName = 'runner.txt';
+    fs.readFile(fileName, (e, d) => {
+        const data = d && d.length > 0 ? JSON.parse(d.toString()) : [];
+        const index = data.findIndex(({ id }) => id.toString() === runner.id);
+        runner.createdDate = data[index].createdDate;
+        data[index] = runner;
+        fs.writeFile(fileName, JSON.stringify(data), (e) => {
+            if (e) {
+                console.log(e);
+                callback('error');
+            }
+            else {
+                callback(null);
+            }
+
+        });
+    });
+}
 
 function deleteOne(m, callback) {
 
@@ -50,3 +75,4 @@ module.exports.readAll = readAll;
 module.exports.readOne = readOne;
 module.exports.saveOne = saveOne;
 module.exports.updateOne = updateOne;
+module.exports.editOne = editOne;

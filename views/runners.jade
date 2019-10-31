@@ -30,7 +30,7 @@ block content
                     td(style='width:140px')=task.createdDate
                     td(style='width:140px')=task.updatedDate
                     td(style='width:140px')
-                        a(href="/runner/edit/"+task.id) edit
-                        form(name="delete", method="post", action="/runner/list") 
-                            span.actions
-                                input(type="submit", value="delete", name="submit")
+                        form(method="post", action="/runner/operation" )
+                            input(name="id",type="hidden", value=task.id)
+                            button(name='op', value='update') Update Runner
+                            button(name='op', value='delete') Delete Runner

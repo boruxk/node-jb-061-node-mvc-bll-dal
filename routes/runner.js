@@ -102,10 +102,62 @@ function getCtrl3(req, res, next) {
     })
 }
 
+function postCtrl5(req, res, next) {
+    const id = req.body.id;
+    const operation = req.body.op;
+
+    switch (operation) {
+        case 'update':
+            res.redirect('/runner/update/' + id);
+            break;
+        case 'delete':
+            deleteRunner();
+            break;
+        default:
+            res.redirect('/runner/list');
+    }
+}
+
+function getCtrl6(req, res) {
+    const id = req.params.id;
+    console.log(req.params);
+    runnerbl.updateRunner(id, function (err, runner) {
+        res.render('edit', {
+            runner: runner
+        })
+    })
+}
+
+function postCtrl6(req, res, next) {
+    const runner = req.body;
+    editRunner(runner, (added) => {
+        return next();
+    })
+};
+
+function editRunner(runner, callback) {
+    let isOk = true;
+    /* validation & logic about runner objects */
+    if (runner.name.length < 2) {
+        isOk = false;
+    }
+    /* end validation & logic about runner objects */
+    if (isOk) {
+        runnerbl.editRunner(runner, function (err, data) {
+            callback('add', data);
+        });
+    } else {
+        callback('error');
+    }
+}
+
 router.get('/list', getCtrl2);
 router.post('/list', postCtrl2, getCtrl2);
 router.get('/add', getCtrl);
 router.post('/add', postCtrl, getCtrl2);
+router.post('/operation', postCtrl5);
+router.post('/update', postCtrl6, getCtrl2);
+router.get('/update/:id', getCtrl6);
 router.get('/:id', getCtrl3);
 
 module.exports = router;

@@ -2,12 +2,15 @@ extends layout-logged
 
 block content
     h1 Edit runner
-    form(name="search", method="post", action="/runner/edit/"+data.id)
+    form(name="search", method="post", action="/runner/update")
+        p id
+        input(value=runner.id, disabled)
+        input(name='id', value=runner.id, type="hidden")
         p name
-        input(type="text", name="name" value=data.name)
+        input(type="text", name="name" value=runner.name)
         p km
-        input(type="text", name="km" value=data.km)
+        input(type="text", name="km" value=runner.km)
         p
         span.actions
-            input(type="submit", value="edit", name="submit")
+            input(type="submit", value="save", name="submit")
     
