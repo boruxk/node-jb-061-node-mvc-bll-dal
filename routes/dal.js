@@ -67,8 +67,22 @@ function editOne(runner, callback) {
     });
 }
 
-function deleteOne(m, callback) {
+function deleteOne(runner, callback) {
+    const fileName = 'runner.txt';
+    fs.readFile(fileName, (e, d) => {
+        const data = d && d.length > 0 ? JSON.parse(d.toString()) : [];
+        const data2 = data.filter(({ id }) => id.toString() !== runner.id);
+        fs.writeFile(fileName, JSON.stringify(data2), (e) => {
+            if (e) {
+                console.log(e);
+                callback('error');
+            }
+            else {
+                callback(null);
+            }
 
+        });
+    });
 }
 
 module.exports.readAll = readAll;
@@ -76,3 +90,4 @@ module.exports.readOne = readOne;
 module.exports.saveOne = saveOne;
 module.exports.updateOne = updateOne;
 module.exports.editOne = editOne;
+module.exports.deleteOne = deleteOne;

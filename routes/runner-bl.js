@@ -66,8 +66,14 @@ function editRunner(runner, callback) {
     })
 }
 
-function deleteRunner(runner) {
-
+function deleteRunner(runner, callback) {
+    dal.deleteOne(runner, function (err, runnerData) {
+        if (err) {
+            callback(err);
+        } else {
+            callback(null, runnerData);
+        }
+    })
 }
 
 module.exports.getRunners = getRunners;
@@ -75,3 +81,4 @@ module.exports.getRunner = getRunner;
 module.exports.createRunner = createRunner;
 module.exports.updateRunner = updateRunner;
 module.exports.editRunner = editRunner;
+module.exports.deleteRunner = deleteRunner;

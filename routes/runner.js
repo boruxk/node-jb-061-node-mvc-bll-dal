@@ -105,13 +105,16 @@ function getCtrl3(req, res, next) {
 function postCtrl5(req, res, next) {
     const id = req.body.id;
     const operation = req.body.op;
+    const runner = req.body;
 
     switch (operation) {
         case 'update':
             res.redirect('/runner/update/' + id);
             break;
         case 'delete':
-            deleteRunner();
+            deleteRunner(runner, (added) => {
+                res.redirect('/runner/list');
+            });
             break;
         default:
             res.redirect('/runner/list');
@@ -149,6 +152,12 @@ function editRunner(runner, callback) {
     } else {
         callback('error');
     }
+}
+
+function deleteRunner(runner, callback) {
+    runnerbl.deleteRunner(runner, function (err, data) {
+        callback('add', data);
+    });
 }
 
 router.get('/list', getCtrl2);
