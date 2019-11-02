@@ -39,7 +39,7 @@ function createRunner(runner, callback) {
 }
 
 function editRunner(id, callback) {
-    dal.updateOne(id, function (err, runnerData) {
+    dal.editOne(id, function (err, runnerData) {
         if (err) {
             callback(err);
         } else {
@@ -57,7 +57,7 @@ function updateRunner(runner, callback) {
     let min = date.getMinutes();
     let dateF = `${year}-${month}-${day} ${hour}:${min}`;
     runner.updatedDate = dateF;
-    dal.editOne(runner, function (err, runnerData) {
+    dal.updateOne(runner, function (err, runnerData) {
         if (err) {
             callback(err);
         } else {
