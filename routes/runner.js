@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const runnerbl = require('./runner-bl');
 
-function getCtrl2(req, res, next) {
+function getRunnerList(req, res, next) {
     if (req.session.xyz !== true) {
         res.redirect('/login');
     } else {
@@ -26,7 +26,7 @@ function getCtrl2(req, res, next) {
     }
 }
 
-function postCtrl2(req, res, next) {
+function postRunnerList(req, res, next) {
     const runner = {
         runnerId: req.body.id,
         runnerName: req.body.name,
@@ -62,11 +62,11 @@ function filterRunner(runner, callback) {
     })
 }
 
-function getCtrl(req, res, next) {
+function getAddRuunnerForm(req, res, next) {
     res.render('add');
 }
 
-function postCtrl(req, res, next) {
+function postAddRuunnerForm(req, res, next) {
     const runner = req.body;
     addRunner(runner, (added) => {
         return next();
@@ -89,7 +89,7 @@ function addRunner(runner, callback) {
     }
 }
 
-function getCtrl3(req, res, next) {
+function getSingleRunner(req, res, next) {
     let id = req.params.id;
     runnerbl.getRunner(id, function (err, runnersData) {
         if (err) {
@@ -102,7 +102,7 @@ function getCtrl3(req, res, next) {
     })
 }
 
-function postCtrl5(req, res, next) {
+function postChosenOperation(req, res, next) {
     const id = req.body.id;
     const operation = req.body.op;
     const runner = req.body;
@@ -121,24 +121,24 @@ function postCtrl5(req, res, next) {
     }
 }
 
-function getCtrl6(req, res) {
+function getEditRunnerForm(req, res) {
     const id = req.params.id;
     console.log(req.params);
-    runnerbl.updateRunner(id, function (err, runner) {
+    runnerbl.editRunner(id, function (err, runner) {
         res.render('edit', {
             runner: runner
         })
     })
 }
 
-function postCtrl6(req, res, next) {
+function postUpdateRunner(req, res, next) {
     const runner = req.body;
-    editRunner(runner, (added) => {
+    updateRunner(runner, (added) => {
         return next();
     })
 };
 
-function editRunner(runner, callback) {
+function updateRunner(runner, callback) {
     let isOk = true;
     /* validation & logic about runner objects */
     if (runner.name.length < 2) {
@@ -146,7 +146,7 @@ function editRunner(runner, callback) {
     }
     /* end validation & logic about runner objects */
     if (isOk) {
-        runnerbl.editRunner(runner, function (err, data) {
+        runnerbl.updateRunner(runner, function (err, data) {
             callback('add', data);
         });
     } else {
@@ -160,13 +160,13 @@ function deleteRunner(runner, callback) {
     });
 }
 
-router.get('/list', getCtrl2);
-router.post('/list', postCtrl2, getCtrl2);
-router.get('/add', getCtrl);
-router.post('/add', postCtrl, getCtrl2);
-router.post('/operation', postCtrl5);
-router.post('/update', postCtrl6, getCtrl2);
-router.get('/update/:id', getCtrl6);
-router.get('/:id', getCtrl3);
+router.get('/list', getRunnerList);
+router.post('/list', postRunnerList, getRunnerList);
+router.get('/add', getAddRuunnerForm);
+router.post('/add', postAddRuunnerForm, getRunnerList);
+router.post('/operation', postChosenOperation);
+router.post('/update', postUpdateRunner, getRunnerList);
+router.get('/update/:id', getEditRunnerForm);
+router.get('/:id', getSingleRunner);
 
 module.exports = router;

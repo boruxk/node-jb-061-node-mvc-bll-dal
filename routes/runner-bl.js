@@ -38,7 +38,7 @@ function createRunner(runner, callback) {
     })
 }
 
-function updateRunner(id, callback) {
+function editRunner(id, callback) {
     dal.updateOne(id, function (err, runnerData) {
         if (err) {
             callback(err);
@@ -48,7 +48,7 @@ function updateRunner(id, callback) {
     })
 }
 
-function editRunner(runner, callback) {
+function updateRunner(runner, callback) {
     let date = new Date;
     let year = date.getFullYear();
     let month = date.getMonth() + 1;

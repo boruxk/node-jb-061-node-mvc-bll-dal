@@ -37,7 +37,7 @@ function saveOne(runner, callback) {
     });
 }
 
-function updateOne(id, callback) {
+function editOne(id, callback) {
     const fileName = 'runner.txt';
     fs.readFile(fileName, (e, d) => {
         let data = d && d.length > 0 ? JSON.parse(d.toString()) : [];
@@ -47,7 +47,7 @@ function updateOne(id, callback) {
     });
 }
 
-function editOne(runner, callback) {
+function updateOne(runner, callback) {
     const fileName = 'runner.txt';
     fs.readFile(fileName, (e, d) => {
         const data = d && d.length > 0 ? JSON.parse(d.toString()) : [];
